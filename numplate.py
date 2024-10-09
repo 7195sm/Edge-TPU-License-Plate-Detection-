@@ -8,12 +8,12 @@ import time
 from PIL import Image, ImageDraw, ImageFont
 
 
-model=YOLO('num8.pt')
+model=YOLO('num8s2_full_integer_quant_edgetpu.tflite')
 ocr = PaddleOCR(use_angle_cls=True,lang="korean")
 cap = cv2.VideoCapture(0)
 
 font_path = "/usr/share/fonts/truetype/nanum/NanumGothic.ttf"
-font = ImageFont.truetype(font_path, 20)
+font = ImageFont.truetype(font_path, 35)
 def perform_ocr(image_array):
     if image_array is None:
         raise ValueError("Image is None")
@@ -42,7 +42,7 @@ while True:
         break
     
     frame_count += 1
-    if frame_count % 3 != 0:
+    if frame_count % 5 != 0:
         continue
 
     frame = cv2.resize(frame, (640,640))
@@ -67,7 +67,7 @@ while True:
         print(text)
         pil_image = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
         draw = ImageDraw.Draw(pil_image)
-        draw.text((x1 - 50, y1-30), text, font=font, fill=(255,0,0))
+        draw.text((x1 - 50, y1-40), text, font=font, fill=(255,0,0))
         frame = cv2.cvtColor(np.array(pil_image), cv2.COLOR_RGB2BGR)
         cv2.rectangle(frame,(x1,y1),(x2,y2),(0,0,255),2)
 
